@@ -5,11 +5,11 @@
     <h1>{{ msg }}</h1>
   </div>
 
-<div class="flex align-content-center justify-content-center" >
-  <Message class="w-7" v-for="msg of messages" :severity="msg.severity" :key="msg.content">{{msg.content}}</Message>
+  <div class="flex align-content-center justify-content-center">
+    <Message class="w-7" v-for="msg of messages" :severity="msg.severity" :key="msg.content">{{ msg.content }}</Message>
   </div>
 
-  <div class="card lg:px-8 md:px-4 sm:px-8">
+  <div class="card px-4 lg:px-8 md:px-4 sm:px-8">
     <h3 class="text-center">Add some ratings to Parse Server</h3>
     <div class="grid">
       <div class="field col-12 md:col-4">
@@ -33,19 +33,19 @@
     </div>
   </div>
 
-    <div class="m-6">
-      <h3 class="text-center">Your ratings</h3>
-      <DataTable :value="ratingEntries" stripedRows :scrollable="true" :loading="loading">
-        <Column field="name" header="Name" style="width: 180px"></Column>
-        <Column field="type" header="Type" style="width: 180px"></Column>
-        <Column field="rating" header="Rating" style="width: 200px">
-          <template #body="slotProps">
-            <Rating :modelValue="slotProps.data.rating" :readonly="true" :cancel="false" />
-          </template>
-        </Column>
-      </DataTable>
-    </div>
-    <h4 class="text-center font-italic" v-if="!loading && !ratingEntries">No entries found..</h4>
+  <div class="m-6">
+    <h3 class="text-center">Your ratings</h3>
+    <DataTable :value="ratingEntries" stripedRows :scrollable="true" :loading="loading">
+      <Column field="name" header="Name" style="width: 180px"></Column>
+      <Column field="type" header="Type" style="width: 180px"></Column>
+      <Column field="rating" header="Rating" style="width: 200px">
+        <template #body="slotProps">
+          <Rating :modelValue="slotProps.data.rating" :readonly="true" :cancel="false" />
+        </template>
+      </Column>
+    </DataTable>
+  </div>
+  <h4 class="text-center font-italic" v-if="!loading && !ratingEntries">No entries found..</h4>
 </template>
 
 <script>
@@ -82,10 +82,10 @@ export default defineComponent({
 
       ratingEntry.save()
         .then((result) => {
-          this.$toast.add({severity:'success', summary: 'Rating sccessfully saved!', detail:`${JSON.stringify(this.mapToRatingEntrieObject(result), null, 2)}`, life: 5000}); // todo: add created at
+          this.$toast.add({ severity: 'success', summary: 'Rating sccessfully saved!', detail: `${JSON.stringify(this.mapToRatingEntrieObject(result), null, 2)}`, life: 5000 }); // todo: add created at
           this.resetFormVaules();
         }, (error) => {
-          this.messages.push({severity: 'error', content: `Cloud not save entry: ${error.message}`});
+          this.messages.push({ severity: 'error', content: `Cloud not save entry: ${error.message}` });
           console.error(error.message)
         });
     },
@@ -117,7 +117,7 @@ export default defineComponent({
       }
       this.loading = false;
     }, (error) => {
-      this.messages.push({severity: 'error', content: `Cloud not load entries: ${error.message}`});
+      this.messages.push({ severity: 'error', content: `Cloud not load entries: ${error.message}` });
     });
   }
 })
