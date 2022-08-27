@@ -34,8 +34,12 @@
   </div>
 
   <div class="m-6">
-    <h3 class="text-center">Your ratings</h3>
+    <h3 class="text-center">Ratings Table
+      <i class="pi pi-info-circle"
+        v-tooltip.top="'Newly added entries are loaded asynchronously via websocket event!'"></i>
+    </h3>
     <DataTable :value="ratingEntries" stripedRows :scrollable="true" :loading="loading">
+      <Column field="objectId" header="Object ID" style="width: 100px"></Column>
       <Column field="name" header="Name" style="width: 180px"></Column>
       <Column field="type" header="Type" style="width: 180px"></Column>
       <Column field="rating" header="Rating" style="width: 200px">
@@ -73,6 +77,32 @@ export default defineComponent({
       return query.find();
     },
 
+    async subscribeEvents() {
+      let query = new Parse.Query('ratingEntry');
+      let subscription = await query.subscribe();
+
+      subscription.on('create', (object) => {
+        this.ratingEntries.push(this.mapToRatingEntryObject(object));
+      });
+
+      subscription.on('update', (object) => {
+        if (this.ratingEntries?.length > 0) {
+          const entryIndex = this.ratingEntries.findIndex(entry => entry.objectId === object.id);
+          if (entryIndex > 0) {
+            this.ratingEntries.splice(entryIndex, 1, this.mapToRatingEntryObject(object));
+          }
+        }
+      });
+      subscription.on('delete', (object) => {
+        if (this.ratingEntries?.length > 0) {
+          const entryIndex = this.ratingEntries.findIndex(entry => entry.objectId === object.id);
+          if (entryIndex > 0) {
+            this.ratingEntries.splice(entryIndex, 1);
+          }
+        }
+      });
+    },
+
     addRatingEntry() {
       const ratingEntry = new this.RatingEntryObject();
 
@@ -82,10 +112,10 @@ export default defineComponent({
 
       ratingEntry.save()
         .then((result) => {
-          this.$toast.add({ severity: 'success', summary: 'Rating sccessfully saved!', detail: `${JSON.stringify(this.mapToRatingEntrieObject(result), null, 2)}`, life: 5000 }); // todo: add created at
+          this.$toast.add({ severity: 'success', summary: 'Rating sccessfully saved!', detail: `${JSON.stringify(this.mapToRatingEntryObject(result), null, 2)}`, life: 5000 }); // todo: add created at
           this.resetFormVaules();
         }, (error) => {
-          this.messages.push({ severity: 'error', content: `Cloud not save entry: ${error.message}` });
+          this.messages.push({ severity: 'error', content: `could not save entry: ${error.message}` });
           console.error(error.message)
         });
     },
@@ -96,8 +126,8 @@ export default defineComponent({
       this.rating = null;
     },
 
-    mapToRatingEntrieObject(entry) {
-      return { name: entry.get("name"), type: entry.get("type"), rating: entry.get("rating") };
+    mapToRatingEntryObject(entry) {
+      return { objectId: entry.id, name: entry.get("name"), type: entry.get("type"), rating: entry.get("rating") };
     }
   },
   created() {
@@ -112,13 +142,15 @@ export default defineComponent({
     Parse.serverURL = "http://localhost:1337/parse/";
 
     this.loadRatingEntries().then(results => {
-      if (results && results.length > 0) {
-        this.ratingEntries = results.map(entry => this.mapToRatingEntrieObject(entry));
+      if (results?.length > 0) {
+        this.ratingEntries = results.map(entry => this.mapToRatingEntryObject(entry));
       }
       this.loading = false;
     }, (error) => {
-      this.messages.push({ severity: 'error', content: `Cloud not load entries: ${error.message}` });
+      this.messages.push({ severity: 'error', content: `could not load entries: ${error.message}` });
     });
+
+    this.subscribeEvents();
   }
 })
 </script>

@@ -18,6 +18,7 @@ import ColumnGroup from 'primevue/columngroup';
 import ProgressSpinner from 'primevue/progressspinner';
 import Toast from 'primevue/toast';
 import Message from 'primevue/message';
+import Tooltip from 'primevue/tooltip';
 
 const app = createApp(App);
 
@@ -33,6 +34,7 @@ app.component('ColumnGroup', ColumnGroup);
 app.component('ProgressSpinner', ProgressSpinner);
 app.component('Toast', Toast);
 app.component('Message', Message);
+app.directive('tooltip', Tooltip);
 
 app.mount("#app");
 
