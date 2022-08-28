@@ -1,6 +1,14 @@
 # parse-client-demo
 PWA App to demonstrate some of the parse server features. The PWA App is based on [Vue.js v3](https://vuejs.org/guide/introduction.html).
 
+## App features
+- User Registration and Login
+- List all persisted entries
+- Add new entries
+- Enable / disable WebSocket updates for create, update and delete events
+
+Note: Unfortunately, push notifications are not supported by the Parse Javascript SDK (only by the native Parse IOS, Android, .NET SDKs). Therefore, push notifications are not implemented in this demo PWA app. However, technically push notifications could be implemented manually: [MDN: How to make PWAs re-engageable using Notifications and Push](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Re-engageable_Notifications_Push)
+
 ## Parse-Client setup
 - TODO: set server url etc.
 

@@ -63,13 +63,16 @@
 
 <script>
 import Parse from 'parse/dist/parse.js'; // TODO min
-import { defineComponent } from 'vue'
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 
-export default defineComponent({
+export default {
   props: {
-    msg: String
+    msg: String,
+    user: {
+      type: Parse.User,
+      required: true
+    } 
   },
   setup() {
     return { v$: useVuelidate() }
@@ -121,6 +124,7 @@ export default defineComponent({
           const entryIndex = this.ratingEntries.findIndex(entry => entry.objectId === object.id);
           if (entryIndex >= 0) {
             this.ratingEntries.splice(entryIndex, 1, this.mapToRatingEntryObject(object));
+            this.$toast.add({ severity: 'info', summary: 'A rating entry was updated.', detail: `${JSON.stringify(this.mapToRatingEntryObject(object), null, 2)}`, life: 8000 });
           }
         }
       });
@@ -145,11 +149,11 @@ export default defineComponent({
 
         ratingEntry.save()
           .then((result) => {
-            this.$toast.add({ severity: 'success', summary: 'Rating sccessfully saved!', detail: `${JSON.stringify(this.mapToRatingEntryObject(result), null, 2)}`, life: 5000 }); // todo: add created at
+            this.$toast.add({ severity: 'success', summary: 'Rating entry sccessfully saved!', detail: `${JSON.stringify(this.mapToRatingEntryObject(result), null, 2)}`, life: 6000 });
             this.resetFormVaules();
             this.v$.$reset();
           }, (error) => {
-            this.messages.push({ severity: 'error', content: `could not save entry: ${error.message}` });
+            this.messages.push({ severity: 'error', content: `${error.code} - could not save entry: ${error.message}` });
             console.error(error.message)
           });
       }
@@ -169,24 +173,20 @@ export default defineComponent({
     this.loading = true;
   },
   mounted() {
-    // Parse initialization
-    Parse.initialize("mOYkwNZq5afeNePzifsH");
-    Parse.serverURL = "http://localhost:1337/parse/";
-
     this.loadRatingEntries().then(results => {
       if (results?.length > 0) {
         this.ratingEntries = results.map(entry => this.mapToRatingEntryObject(entry));
       }
       this.loading = false;
     }, (error) => {
-      this.messages.push({ severity: 'error', content: `could not load entries: ${error.message}` });
+      this.messages.push({ severity: 'error', content: `${error.code} - could not load entries: ${error.message}` });
     });
 
     if (this.webSocketActive) {
       this.subscribeEvents();
     }
   }
-})
+}
 </script>
 
 <style scoped lang="scss">
