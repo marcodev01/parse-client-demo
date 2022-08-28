@@ -59,6 +59,23 @@
     </DataTable>
     <h4 class="text-center font-italic" v-if="!loading && ratingEntries.length === 0">No entries found..</h4>
   </div>
+
+  <div class="mb-4">
+    <h3 class="text-center">Calculate the average of rating for a specfifc type by Cloud Functions</h3>
+    <div  class="flex align-content-center field flex align-items-center justify-content-center">
+      <div class="flex justify-content-center field flex align-items-center justify-content-center mr-2">
+        <span class="p-float-label">
+          <InputText id="typeAverage" type="text" v-model="typeAverage" />
+          <label for="typeAverage">Type</label>
+        </span>
+      </div>
+      <div
+        class="flex justify-content-center field flex align-items-center justify-content-center">
+        <Button label="Calculate average" class="p-button-success" @click="averageByCloudFunction()"></Button>
+      </div>
+    </div>
+    <p v-if="calculatedAverage" class="text-center text-green-600"><span class="font-semibold">Average:</span> {{calculatedAverage}}</p>
+  </div>
 </template>
 
 <script>
@@ -86,6 +103,8 @@ export default {
       RatingEntryObject: Parse.Object.extend("ratingEntry"),
       ratingEntries: [],
       webSocketActive: this.user.get("websocket"),
+      typeAverage: null,
+      calculatedAverage: null,
       messages: []
     }
   },
@@ -159,6 +178,11 @@ export default {
             console.error(error.message)
           });
       }
+    },
+
+    async averageByCloudFunction() {
+      const params =  { type: this.typeAverage };
+      this.calculatedAverage = await Parse.Cloud.run("averageStarsForType", params);
     },
 
     resetFormVaules() {
