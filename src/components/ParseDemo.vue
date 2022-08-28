@@ -39,8 +39,8 @@
       <div>
       </div>
       <div class="flex align-items-center">
-        <span class="mr-1 text-lg">Websocket</span>
-        <i class="pi pi-info-circle mr-2"
+        <span class="mr-2 text-lg">Websocket</span>
+        <i class="pi pi-info-circle mr-3"
           v-tooltip.top="'Create, Update and Delete events of rating objects are updated asynchronously by websocket connection'"></i>
         <ToggleButton v-model="webSocketActive" onLabel="On" offLabel="Off" onIcon="pi pi-check"
           offIcon="pi pi-times" />
@@ -72,7 +72,7 @@ export default {
     user: {
       type: Parse.User,
       required: true
-    } 
+    }
   },
   setup() {
     return { v$: useVuelidate() }
@@ -85,7 +85,7 @@ export default {
       loading: false,
       RatingEntryObject: Parse.Object.extend("ratingEntry"),
       ratingEntries: [],
-      webSocketActive: true,
+      webSocketActive: this.user.get("websocket"),
       messages: []
     }
   },
@@ -99,9 +99,11 @@ export default {
     webSocketActive(newWebSocketActive, oldWebSocketActive) {
       if (newWebSocketActive && !oldWebSocketActive) {
         this.subscribeEvents();
+        this.setUserWebsocket(newWebSocketActive);
       }
       if (!newWebSocketActive && oldWebSocketActive) {
         Parse.LiveQuery.close();
+        this.setUserWebsocket(newWebSocketActive);
       }
     }
   },
@@ -163,6 +165,16 @@ export default {
       this.name = null;
       this.type = null;
       this.rating = null;
+    },
+
+    async setUserWebsocket(webSocketActive) {
+      this.user.set("websocket", webSocketActive);
+      await this.user.save().then((result) => {
+        this.$toast.add({ severity: 'info', summary: 'Saved user setting for websocket', detail: `${JSON.stringify(result, null, 2)}`, life: 6000 });
+      }, (error) => {
+        this.messages.push({ severity: 'error', content: `${error.code} - could not save user setting for websocket: ${error.message}` });
+        console.error(error.message)
+      });
     },
 
     mapToRatingEntryObject(entry) {

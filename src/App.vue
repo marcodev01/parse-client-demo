@@ -1,7 +1,7 @@
 <template>
   <div class="mr-6 ml-6 flex justify-content-between" v-if="currentUser">
     <div class="flex align-items-center">
-      <div class="text-lg">User: <span class="text-lg font-bold">{{ currentUser.getUsername() }}</span></div>
+      <div class="text-lg">Username: <span class="text-lg font-bold">{{ currentUser.getUsername() }}</span></div>
     </div>
     <div class="flex align-items-center">
       <Button label="Log Out" class="p-button-secondary flex" @click="logOut()"></Button>

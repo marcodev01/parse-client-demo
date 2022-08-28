@@ -90,6 +90,7 @@ export default {
         user.set("username", this.username);
         user.set("password", this.password);
         user.set("email", this.eMail);
+        user.set("websocket", true);
         try {
           await user.signUp();
           this.user = Parse.User.current();
