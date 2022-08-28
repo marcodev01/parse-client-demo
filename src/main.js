@@ -19,6 +19,7 @@ import ProgressSpinner from 'primevue/progressspinner';
 import Toast from 'primevue/toast';
 import Message from 'primevue/message';
 import Tooltip from 'primevue/tooltip';
+import ToggleButton from 'primevue/togglebutton';
 
 const app = createApp(App);
 
@@ -34,6 +35,7 @@ app.component('ColumnGroup', ColumnGroup);
 app.component('ProgressSpinner', ProgressSpinner);
 app.component('Toast', Toast);
 app.component('Message', Message);
+app.component('ToggleButton', ToggleButton);
 app.directive('tooltip', Tooltip);
 
 app.mount("#app");
