@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import Parse from 'parse/dist/parse.js'; // TODO min && fix favicons
+import Parse from 'parse/dist/parse.js'; // TODO min
 import { defineComponent } from 'vue'
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
