@@ -21,7 +21,7 @@ import Message from 'primevue/message';
 import Tooltip from 'primevue/tooltip';
 import ToggleButton from 'primevue/togglebutton';
 import Password from 'primevue/password';
-import Menu from 'primevue/menu';
+import Dropdown from 'primevue/dropdown';
 
 const app = createApp(App);
 
@@ -39,7 +39,7 @@ app.component('Toast', Toast);
 app.component('Message', Message);
 app.component('ToggleButton', ToggleButton);
 app.component('Password', Password);
-app.component('Menu', Menu);
+app.component('Dropdown', Dropdown);
 app.directive('tooltip', Tooltip);
 
 app.mount("#app");

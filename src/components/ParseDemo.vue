@@ -19,8 +19,7 @@
       </div>
       <div class="col-12 md:col-4">
         <span class="p-float-label">
-          <InputText id="type" class="w-full" :class="{ 'p-invalid': v$.type.$error }" type="text" v-model="type" />
-          <label for="type">Type (Movie, Music...)</label>
+          <Dropdown id="type" v-model="type" class="w-full" :options="typeOptions" :class="{ 'p-invalid': v$.type.$error }" placeholder="Select a Type" />
         </span>
       </div>
       <div class="field col-12 md:col-2 flex align-content-center justify-content-center flex-wrap no-wrap">
@@ -61,12 +60,11 @@
   </div>
 
   <div class="mb-4">
-    <h3 class="text-center">Calculate the average of rating for a specfifc type by Cloud Functions</h3>
+    <h3 class="text-center">Calculate by Parse Cloud Functions the rating average for a given type</h3>
     <div  class="flex align-content-center field flex align-items-center justify-content-center">
       <div class="flex justify-content-center field flex align-items-center justify-content-center mr-2">
         <span class="p-float-label">
-          <InputText id="typeAverage" type="text" v-model="typeAverage" />
-          <label for="typeAverage">Type</label>
+          <Dropdown id="typeAverage" v-model="typeAverage" class="w-full" :options="typeOptions" placeholder="Select a Type" />
         </span>
       </div>
       <div
@@ -79,7 +77,7 @@
 </template>
 
 <script>
-import Parse from 'parse/dist/parse.js'; // TODO min
+import Parse from 'parse/dist/parse.min.js';
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 
@@ -98,11 +96,17 @@ export default {
     return {
       name: null,
       type: null,
+      typeOptions: [
+        'Movie',
+        'Music',
+        'Book',
+        'Game'
+      ],
       rating: null,
       loading: false,
-      RatingEntryObject: Parse.Object.extend("ratingEntry"),
+      RatingEntryObject: Parse.Object.extend('RatingEntry'),
       ratingEntries: [],
-      webSocketActive: this.user.get("websocket"),
+      webSocketActive: this.user.get('websocket'),
       typeAverage: null,
       calculatedAverage: null,
       messages: []
@@ -133,7 +137,7 @@ export default {
     },
 
     async subscribeEvents() {
-      let query = new Parse.Query('ratingEntry');
+      let query = new Parse.Query('RatingEntry');
       let subscription = await query.subscribe();
 
       subscription.on('create', (object) => {
@@ -164,9 +168,9 @@ export default {
       if (isFormValid) {
         const ratingEntry = new this.RatingEntryObject();
 
-        ratingEntry.set("name", this.name);
-        ratingEntry.set("type", this.type);
-        ratingEntry.set("rating", this.rating);
+        ratingEntry.set('name', this.name);
+        ratingEntry.set('type', this.type);
+        ratingEntry.set('rating', this.rating);
 
         ratingEntry.save()
           .then((result) => {
@@ -182,7 +186,7 @@ export default {
 
     async averageByCloudFunction() {
       const params =  { type: this.typeAverage };
-      this.calculatedAverage = await Parse.Cloud.run("averageStarsForType", params);
+      this.calculatedAverage = await Parse.Cloud.run('averageStarsForType', params);
     },
 
     resetFormVaules() {
@@ -192,7 +196,7 @@ export default {
     },
 
     async setUserWebsocket(webSocketActive) {
-      this.user.set("websocket", webSocketActive);
+      this.user.set('websocket', webSocketActive);
       await this.user.save().then((result) => {
         this.$toast.add({ severity: 'info', summary: 'Saved user setting for websocket', detail: `${JSON.stringify(result, null, 2)}`, life: 6000 });
       }, (error) => {
@@ -202,7 +206,7 @@ export default {
     },
 
     mapToRatingEntryObject(entry) {
-      return { objectId: entry.id, name: entry.get("name"), type: entry.get("type"), rating: entry.get("rating") };
+      return { objectId: entry.id, name: entry.get('name'), type: entry.get('type'), rating: entry.get('rating') };
     }
   },
   beforeCreate() {

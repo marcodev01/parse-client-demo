@@ -36,15 +36,14 @@
         <Button label="Sign Up" class="p-button-text p-button-secondary" @click="signUpForm(true)"></Button>
       </div>
     </template>
-
   </div>
 
 </template>
 
 <script>
-import Parse from 'parse/dist/parse.js'; // TODO min
-import useVuelidate from '@vuelidate/core'
-import { required, email } from '@vuelidate/validators'
+import Parse from 'parse/dist/parse.min.js';
+import useVuelidate from '@vuelidate/core';
+import { required, email } from '@vuelidate/validators';
 
 export default {
   emits: ['loggedInUser'],
@@ -67,7 +66,7 @@ export default {
       password: { required },
     }
     if (this.isSignUp) {
-      loginRules.eMail = { email, required}; // disable for server side validation show case
+      loginRules.eMail = { email, required}; // disable for server side validation show case with server error
     }
     return loginRules;
   },

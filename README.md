@@ -10,8 +10,9 @@ PWA App to demonstrate some of the parse server features. The PWA App is based o
 
 Note: Unfortunately, push notifications are not supported by the Parse Javascript SDK (only by the native Parse IOS, Android, .NET SDKs). Therefore, push notifications are not implemented in this demo PWA app. However, technically push notifications could be implemented manually: [MDN: How to make PWAs re-engageable using Notifications and Push](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Re-engageable_Notifications_Push)
 
-## Parse-Client setup
-- TODO: set server url etc.
+## Parse-Client settings
+- Set your specfied parse server id `parseAppId` in `src/parseSettings.json`
+- Set your parse server url `parseServerUrl` in `src/parseServerUrl.json`
 
 ## Development project setup
 - Preconditions: nodeJS and npm

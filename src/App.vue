@@ -14,9 +14,10 @@
 </template>
 
 <script>
-import ParseDemo from './components/ParseDemo.vue'
-import Login from './components/Login.vue'
-import Parse from 'parse/dist/parse.js';
+import ParseDemo from './components/ParseDemo.vue';
+import Login from './components/Login.vue';
+import Parse from 'parse/dist/parse.min.js';
+import ParseSettings from './parseSettings.json';
 
 export default {
   name: 'App',
@@ -38,8 +39,8 @@ export default {
   },
   mounted() {
     // Parse initialization
-    Parse.initialize("mOYkwNZq5afeNePzifsH");
-    Parse.serverURL = "http://localhost:1337/parse/";
+    Parse.initialize(ParseSettings.parseAppId);
+    Parse.serverURL = ParseSettings.parseServerUrl;
 
     this.currentUser = Parse.User.current();
   }
