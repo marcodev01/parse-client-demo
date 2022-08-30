@@ -3,8 +3,8 @@ PWA App to demonstrate some of the parse server features. The PWA App is based o
 
 ## App features
 - User Registration and Login
+- Add new entries (technically a Parse Object - for complex Parse Objects see: https://docs.parseplatform.org/js/guide/#parseobject)
 - List all persisted entries
-- Add new entries
 - Enable / disable WebSocket updates for create, update and delete events
 - Persist user settings
 
