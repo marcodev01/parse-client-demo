@@ -1,4 +1,4 @@
 {
   "parseAppId": "mOYkwNZq5afeNePzifsH",
-  "parseServerUrl": "http://localhost:1337/parse/"
+  "parseServerUrl": "http://aws-fargate-parse-server-alb-dev-93585141.eu-central-1.elb.amazonaws.com/parse/"
 }
