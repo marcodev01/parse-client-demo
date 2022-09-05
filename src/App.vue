@@ -43,6 +43,7 @@ export default {
     Parse.initialize(process.env.PARSE_APP_ID || ParseSettings.parseAppId);
     // eslint-disable-next-line no-undef
     Parse.serverURL = process.env.PARSE_SERVER_URL || ParseSettings.parseServerUrl;
+    console.log('process.env.PARSE_SERVER_URL', process.env.PARSE_SERVER_URL)
 
     this.currentUser = Parse.User.current();
   }
