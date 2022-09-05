@@ -39,8 +39,14 @@ export default {
   },
   mounted() {
     // Parse initialization
-    Parse.initialize(ParseSettings.parseAppId);
-    Parse.serverURL = ParseSettings.parseServerUrl;
+    // eslint-disable-next-line no-undef
+    Parse.initialize(process.env.PARSE_APP_ID || ParseSettings.parseAppId);
+    // eslint-disable-next-line no-undef
+    Parse.serverURL = process.env.PARSE_SERVER_URL || ParseSettings.parseServerUrl;
+    // eslint-disable-next-line no-undef
+    console.log('process.env.PARSE_APP_ID',  process.env.PARSE_APP_ID)
+    // eslint-disable-next-line no-undef
+    console.log('process.env.PARSE_SERVER_URL',  process.env.PARSE_SERVER_URL)
 
     this.currentUser = Parse.User.current();
   }
