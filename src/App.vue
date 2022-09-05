@@ -17,7 +17,6 @@
 import ParseDemo from './components/ParseDemo.vue';
 import Login from './components/Login.vue';
 import Parse from 'parse/dist/parse.min.js';
-import ParseSettings from './parseSettings.json';
 
 export default {
   name: 'App',
@@ -40,13 +39,13 @@ export default {
   mounted() {
     // Parse initialization
     // eslint-disable-next-line no-undef
-    Parse.initialize(process.env.PARSE_APP_ID || ParseSettings.parseAppId);
+    Parse.initialize(process.env.VUE_APP_PARSE_SERVER_APPLICATION_ID);
     // eslint-disable-next-line no-undef
-    Parse.serverURL = process.env.PARSE_SERVER_URL || ParseSettings.parseServerUrl;
+    Parse.serverURL = process.env.VUE_APP_PARSE_SERVER_URL;
     // eslint-disable-next-line no-undef
-    console.log('process.env.PARSE_APP_ID',  process.env.PARSE_APP_ID)
+    console.log('process.env.PARSE_APP_ID', process.env.VUE_APP_PARSE_SERVER_APPLICATION_ID)
     // eslint-disable-next-line no-undef
-    console.log('process.env.PARSE_SERVER_URL',  process.env.PARSE_SERVER_URL)
+    console.log('process.env.PARSE_SERVER_URL', process.env.VUE_APP_PARSE_SERVER_URL)
 
     this.currentUser = Parse.User.current();
   }
