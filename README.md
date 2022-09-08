@@ -2,27 +2,28 @@
 PWA App to demonstrate some of the parse server features. The PWA App is based on [Vue.js v3](https://vuejs.org/guide/introduction.html).
 
 ## App features
-- User Registration and Login
-- Add new entries (technically a Parse Object - for complex Parse Objects see: https://docs.parseplatform.org/js/guide/#parseobject)
-- List all persisted entries
+- User registration and login
+- Add new rating entries (simple [Parse Object](https://docs.parseplatform.org/js/guide/#objects))
+- List all persisted rating entries
 - Enable / disable WebSocket updates for create, update and delete events
-- Persist user settings
+- Persist user specific properties (websocket on/off) in [Parse User Object](https://docs.parseplatform.org/js/guide/#users)
 
-Note: Unfortunately, push notifications are not supported by the Parse Javascript SDK (only by the native Parse IOS, Android, .NET SDKs). Therefore, push notifications are not implemented in this demo PWA app. However, technically push notifications could be implemented manually: [MDN: How to make PWAs re-engageable using Notifications and Push](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Re-engageable_Notifications_Push)
+Note: Unfortunately, [push notifications](https://docs.parseplatform.org/js/guide/#push-notifications) are not supported by the Parse Javascript SDK (supported only for native IOS, Android, .NET Parse SDKs). Therefore, push notifications are not implemented in this PWA demo app. However, technically push notifications could be implemented manually: [MDN: How to make PWAs re-engageable using Notifications and Push](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Re-engageable_Notifications_Push)
 
-## Parse-Client settings
-- Set your specfied parse server id `parseAppId` in `src/parseSettings.json`
-- Set your parse server url `parseServerUrl` in `src/parseServerUrl.json`
+## Parse-Client set up
+- Set your parse server id `VUE_APP_PARSE_SERVER_APPLICATION_ID` in `.env`
+- Set parse server https url `VUE_APP_PARSE_SERVER_URL` in `.env`
 
 ## Development project setup
-- Preconditions: nodeJS and npm
-- install dependencies: `npm install`
-- run and hot-reload for development: `npm run serve`
+- Preconditions: **nodeJS** and **npm** must be isntalled
+- Install dependencies: `npm install`
+- Run and hot-reload for development: `npm run serve`
 
-### Compile and minifie for production
-- compile for production: `npm run build`
-- compile and run as installable PWA: `npm run build && npx http-server dist`
-  - Open in Browser (e.g. Chrome) and click on install in the adress bar to install the PWA App locally.
+### Compile and minifie locally for production
+- Compile for production: `npm run build`
+- Compile and run as installable PWA: `npm run build && npx http-server dist`
+  - Open in browser (e.g. Chrome) and click on install in the adress bar to install the PWA App locally.
+
 ### Customize configuration
 - See [Configuration Reference](https://cli.vuejs.org/config/).
 
