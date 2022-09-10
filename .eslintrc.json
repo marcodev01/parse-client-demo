@@ -6,7 +6,7 @@
     "extends": [
         "eslint:recommended",
         "plugin:vue/vue3-essential"
-    //    "plugin:vue/vue3-recommended"
+        // "plugin:vue/vue3-recommended"
     ],
     "overrides": [
     ],
@@ -21,5 +21,8 @@
         "no-unused-vars": "off",
         "vue/no-reserved-component-names": "off",
         "vue/multi-word-component-names": "off"
-    }
+    },
+    "globals": {
+        "process": true
+      }
 }

@@ -29,25 +29,19 @@ export default {
       currentUser: null,
     }
   },
+  mounted() {
+    // Parse initialization
+    Parse.initialize(process.env.VUE_APP_PARSE_SERVER_APPLICATION_ID);
+    Parse.serverURL = process.env.VUE_APP_PARSE_SERVER_URL;
+
+    this.currentUser = Parse.User.current();
+  },
   methods: {
     logOut() {
       Parse.User.logOut().then(() => {
         this.currentUser = Parse.User.current();  // this will now be null
       });
     }
-  },
-  mounted() {
-    // Parse initialization
-    // eslint-disable-next-line no-undef
-    Parse.initialize(process.env.VUE_APP_PARSE_SERVER_APPLICATION_ID);
-    // eslint-disable-next-line no-undef
-    Parse.serverURL = process.env.VUE_APP_PARSE_SERVER_URL;
-    // eslint-disable-next-line no-undef
-    console.log('process.env.PARSE_APP_ID', process.env.VUE_APP_PARSE_SERVER_APPLICATION_ID)
-    // eslint-disable-next-line no-undef
-    console.log('process.env.PARSE_SERVER_URL', process.env.VUE_APP_PARSE_SERVER_URL)
-
-    this.currentUser = Parse.User.current();
   }
 }
 </script>

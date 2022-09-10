@@ -5,8 +5,8 @@
     <h1>{{ msg }}</h1>
   </div>
 
-  <div class="flex align-content-center justify-content-center">
-    <Message class="w-7" v-for="msg of messages" :severity="msg.severity" :key="msg.content">{{ msg.content }}</Message>
+  <div class="flex align-content-center justify-content-center" v-for="msg of messages" :key="msg.content">
+    <Message class="w-7" :severity="msg.severity">{{ msg.content }}</Message>
   </div>
   <div class="card px-4 lg:px-8 md:px-4 sm:px-8">
     <h3 class="text-center">Add some ratings to Parse Server</h3>
@@ -19,7 +19,8 @@
       </div>
       <div class="col-12 md:col-4">
         <span class="p-float-label">
-          <Dropdown id="type" v-model="type" class="w-full" :options="typeOptions" :class="{ 'p-invalid': v$.type.$error }" placeholder="Select a Type" />
+          <Dropdown id="type" v-model="type" class="w-full" :options="typeOptions"
+            :class="{ 'p-invalid': v$.type.$error }" placeholder="Select a Type" />
         </span>
       </div>
       <div class="field col-12 md:col-2 flex align-content-center justify-content-center flex-wrap no-wrap">
@@ -35,8 +36,6 @@
   <div class="m-6">
     <div class="flex justify-content-between flex-wrap mb-1">
       <div class="text-xl flex align-items-center">Ratings Table</div>
-      <div>
-      </div>
       <div class="flex align-items-center">
         <span class="mr-2 text-lg">Websocket</span>
         <i class="pi pi-info-circle mr-3"
@@ -61,18 +60,19 @@
 
   <div class="mb-4">
     <h3 class="text-center">Calculate by Parse Cloud Functions the rating average for a given type</h3>
-    <div  class="flex align-content-center field flex align-items-center justify-content-center">
+    <div class="flex align-content-center field flex align-items-center justify-content-center">
       <div class="flex justify-content-center field flex align-items-center justify-content-center mr-2">
         <span class="p-float-label">
-          <Dropdown id="typeAverage" v-model="typeAverage" class="w-full" :options="typeOptions" placeholder="Select a Type" />
+          <Dropdown id="typeAverage" v-model="typeAverage" class="w-full" :options="typeOptions"
+            placeholder="Select a Type" />
         </span>
       </div>
-      <div
-        class="flex justify-content-center field flex align-items-center justify-content-center">
+      <div class="flex justify-content-center field flex align-items-center justify-content-center">
         <Button label="Calculate average" class="p-button-success" @click="averageByCloudFunction()"></Button>
       </div>
     </div>
-    <p v-if="calculatedAverage" class="text-center text-green-600"><span class="font-semibold">Average:</span> {{calculatedAverage}}</p>
+    <p v-if="calculatedAverage" class="text-center text-green-600"><span class="font-semibold">Average:</span>
+      {{calculatedAverage}}</p>
   </div>
 </template>
 
@@ -130,6 +130,23 @@ export default {
       }
     }
   },
+  beforeCreate() {
+    this.loading = true;
+  },
+  mounted() {
+    this.loadRatingEntries().then(results => {
+      if (results?.length > 0) {
+        this.ratingEntries = results.map(entry => this.mapToRatingEntryObject(entry));
+      }
+      this.loading = false;
+    }, (error) => {
+      this.messages.push({ severity: 'error', content: `${error.code} - could not load entries: ${error.message}` });
+    });
+
+    if (this.webSocketActive) {
+      this.subscribeEvents();
+    }
+  },
   methods: {
     loadRatingEntries() {
       const query = new Parse.Query(this.RatingEntryObject);
@@ -185,7 +202,7 @@ export default {
     },
 
     async averageByCloudFunction() {
-      const params =  { type: this.typeAverage };
+      const params = { type: this.typeAverage };
       this.calculatedAverage = await Parse.Cloud.run('averageStarsForType', params);
     },
 
@@ -207,23 +224,6 @@ export default {
 
     mapToRatingEntryObject(entry) {
       return { objectId: entry.id, name: entry.get('name'), type: entry.get('type'), rating: entry.get('rating') };
-    }
-  },
-  beforeCreate() {
-    this.loading = true;
-  },
-  mounted() {
-    this.loadRatingEntries().then(results => {
-      if (results?.length > 0) {
-        this.ratingEntries = results.map(entry => this.mapToRatingEntryObject(entry));
-      }
-      this.loading = false;
-    }, (error) => {
-      this.messages.push({ severity: 'error', content: `${error.code} - could not load entries: ${error.message}` });
-    });
-
-    if (this.webSocketActive) {
-      this.subscribeEvents();
     }
   }
 }

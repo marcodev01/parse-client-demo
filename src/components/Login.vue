@@ -5,21 +5,24 @@
   <h2 v-else class="flex justify-content-center">Login</h2>
 
 
-  <div class="flex align-content-center justify-content-center">
-    <Message class="w-7" v-for="msg of messages" :severity="msg.severity" :key="msg.content">{{ msg.content }}</Message>
+  <div class="flex align-content-center justify-content-center" v-for="msg of messages" :key="msg.content">
+    <Message class="w-7" :severity="msg.severity">{{ msg.content }}</Message>
   </div>
 
   <div class="formgrid grid">
     <div class="field col-12 flex justify-content-center">
-      <InputText class="password-field-width" :class="{ 'p-invalid': v$.username.$error }" v-model="username" placeholder="Username" />
+      <InputText class="password-field-width" :class="{ 'p-invalid': v$.username.$error }" v-model="username"
+        placeholder="Username" />
     </div>
     <div class="field col-12 flex justify-content-center">
-      <Password v-model="password" :class="{ 'p-invalid': v$.password.$error }" placeholder="Password" :feedback="false" toggleMask />
+      <Password v-model="password" :class="{ 'p-invalid': v$.password.$error }" placeholder="Password" :feedback="false"
+        toggleMask />
     </div>
 
     <template v-if="isSignUp">
       <div class="field col-12 flex justify-content-center">
-        <InputText class="password-field-width" :class="{ 'p-invalid': v$.eMail.$error }" v-model="eMail" placeholder="E-mail" />
+        <InputText class="password-field-width" :class="{ 'p-invalid': v$.eMail.$error }" v-model="eMail"
+          placeholder="E-mail" />
       </div>
       <div class="field col-12 flex justify-content-center">
         <Button label="Sign up" @click="signUp()"></Button>
@@ -66,7 +69,7 @@ export default {
       password: { required },
     }
     if (this.isSignUp) {
-      loginRules.eMail = { email, required}; // disable for server side validation show case with server error
+      loginRules.eMail = { email, required }; // disable for server side validation show case with server error
     }
     return loginRules;
   },
