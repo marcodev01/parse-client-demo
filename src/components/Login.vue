@@ -11,7 +11,7 @@
 
   <div class="formgrid grid">
     <div class="field col-12 flex justify-content-center">
-      <InputText class="password-field-width" :class="{ 'p-invalid': v$.username.$error }" v-model="username"
+      <InputText :class="{ 'p-invalid': v$.username.$error }" v-model="username"
         placeholder="Username" />
     </div>
     <div class="field col-12 flex justify-content-center">
@@ -21,7 +21,7 @@
 
     <template v-if="isSignUp">
       <div class="field col-12 flex justify-content-center">
-        <InputText class="password-field-width" :class="{ 'p-invalid': v$.eMail.$error }" v-model="eMail"
+        <InputText :class="{ 'p-invalid': v$.eMail.$error }" v-model="eMail"
           placeholder="E-mail" />
       </div>
       <div class="field col-12 flex justify-content-center">
@@ -112,7 +112,11 @@ export default {
 <style scoped lang="scss">
 @import 'primeflex/primeflex.scss';
 
-.password-field-width {
-  width: 223px;
+::v-deep .p-inputtext {
+  width: 225px;
+}
+
+::v-deep .p-password input {
+  width: 225px;
 }
 </style>
