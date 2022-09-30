@@ -6,7 +6,7 @@
 
 
   <div class="flex align-content-center justify-content-center" v-for="msg of messages" :key="msg.content">
-    <Message class="w-7" :severity="msg.severity">{{ msg.content }}</Message>
+    <Message :severity="msg.severity">{{ msg.content }}</Message>
   </div>
 
   <div class="formgrid grid">

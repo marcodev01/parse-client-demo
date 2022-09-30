@@ -6,7 +6,7 @@
   </div>
 
   <div class="flex align-content-center justify-content-center" v-for="msg of messages" :key="msg.content">
-    <Message class="w-7" :severity="msg.severity">{{ msg.content }}</Message>
+    <Message :severity="msg.severity">{{ msg.content }}</Message>
   </div>
   <div class="card px-4 lg:px-8 md:px-4 sm:px-8">
     <h3 class="text-center">Add some ratings to Parse Server</h3>
@@ -33,7 +33,7 @@
     </div>
   </div>
 
-  <div class="m-6">
+  <div class="mx-1 md:mx-8 my-4">
     <div class="flex justify-content-between flex-wrap mb-1">
       <div class="text-xl flex align-items-center">Ratings Table</div>
       <div class="flex align-items-center">
@@ -45,7 +45,7 @@
       </div>
     </div>
 
-    <DataTable :value="ratingEntries" stripedRows :scrollable="true" :loading="loading">
+    <DataTable :value="ratingEntries" stripedRows responsiveLayout="stack" :loading="loading">
       <Column field="objectId" header="Object ID" style="width: 100px"></Column>
       <Column field="name" header="Name" style="width: 180px"></Column>
       <Column field="type" header="Type" style="width: 180px"></Column>
